@@ -77,11 +77,11 @@ fun BetDialog(dialogShow: MutableState<Boolean>, bankSize: Float, viewModel: Rul
                             if (checkedGreen) {
                                 listNumber.addAll(ValueList.getListGreen())
                             }
-                            if(zoneNumberBetsChecked){
+                            if (zoneNumberBetsChecked) {
                                 val list = listOf(*betSetNumber.split(",").toTypedArray())
                                 val set = mutableSetOf<Int>()
-                                list.forEach(){
-                                    if (it.toInt() in 0..36){
+                                list.forEach {
+                                    if (it.toInt() in 0..36) {
                                         set.add(it.toInt())
                                     }
                                 }
@@ -155,7 +155,7 @@ fun BetDialog(dialogShow: MutableState<Boolean>, bankSize: Float, viewModel: Rul
                             })
                         }
                     }
-                    if (zoneNumberBetsChecked){
+                    if (zoneNumberBetsChecked) {
                         TextField(
                             value = betSetNumber,
                             onValueChange = { betSetNumber = it },
