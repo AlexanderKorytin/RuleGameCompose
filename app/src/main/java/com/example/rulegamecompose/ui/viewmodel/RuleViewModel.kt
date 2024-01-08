@@ -34,7 +34,7 @@ class RuleViewModel(private val interactor: RuleInteractor) : ViewModel() {
     fun getAmountBet() = amountBet
 
     private var setNumberBet: MutableLiveData<MutableSet<Int>> = MutableLiveData(mutableSetOf())
-    fun setListNumberBet(value: List<Int>) {
+    fun setListNumberBet(value: Set<Int>) {
         setNumberBet.value?.clear()
         setNumberBet.value?.addAll(value)
     }

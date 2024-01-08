@@ -47,7 +47,13 @@ fun BetDialog(dialogShow: MutableState<Boolean>, bankSize: Float, viewModel: Rul
         var checkedGreen by remember {
             mutableStateOf(false)
         }
-        var listNumber = mutableListOf<Int>()
+        var zoneNumberBetsChecked by remember {
+            mutableStateOf(false)
+        }
+        var betSetNumber by remember {
+            mutableStateOf("")
+        }
+        var listNumber = mutableSetOf<Int>()
 
 
         AlertDialog(
@@ -71,6 +77,16 @@ fun BetDialog(dialogShow: MutableState<Boolean>, bankSize: Float, viewModel: Rul
                             if (checkedGreen) {
                                 listNumber.addAll(ValueList.getListGreen())
                             }
+                            if(zoneNumberBetsChecked){
+                                val list = listOf(*betSetNumber.split(",").toTypedArray())
+                                val set = mutableSetOf<Int>()
+                                list.forEach(){
+                                    if (it.toInt() in 0..36){
+                                        set.add(it.toInt())
+                                    }
+                                }
+                                listNumber.addAll(set)
+                            }
                             viewModel.setListNumberBet(listNumber)
                             dialogShow.value = false
                         }
@@ -89,13 +105,12 @@ fun BetDialog(dialogShow: MutableState<Boolean>, bankSize: Float, viewModel: Rul
             },
             text = {
                 Column(verticalArrangement = Arrangement.SpaceBetween) {
-
                     TextField(
                         value = amountBet,
                         onValueChange = { amountBet = it.trimStart() },
                         singleLine = true,
                         placeholder = {
-                            Text(text = "Enter amount of the bet:")
+                            Text(text = "Enter amount of the bet")
                         },
                         label = {
                             Text(text = "amount of the bet:")
@@ -113,6 +128,10 @@ fun BetDialog(dialogShow: MutableState<Boolean>, bankSize: Float, viewModel: Rul
                         Text(text = "bet on color:")
                         Checkbox(checked = zoneColorBetsChecked, onCheckedChange = {
                             zoneColorBetsChecked = !zoneColorBetsChecked
+                        })
+                        Text(text = "bet on number:")
+                        Checkbox(checked = zoneNumberBetsChecked, onCheckedChange = {
+                            zoneNumberBetsChecked = !zoneNumberBetsChecked
                         })
                     }
                     if (zoneColorBetsChecked) {
@@ -135,6 +154,21 @@ fun BetDialog(dialogShow: MutableState<Boolean>, bankSize: Float, viewModel: Rul
                                 checkedGreen = !checkedGreen
                             })
                         }
+                    }
+                    if (zoneNumberBetsChecked){
+                        TextField(
+                            value = betSetNumber,
+                            onValueChange = { betSetNumber = it },
+                            singleLine = true,
+                            placeholder = {
+                                Text(text = "Enter number 0..36 separated by ',' ")
+                            },
+                            label = {
+                                Text(text = "number")
+                            },
+                            shape = RoundedCornerShape(8.dp),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        )
                     }
 
                 }
