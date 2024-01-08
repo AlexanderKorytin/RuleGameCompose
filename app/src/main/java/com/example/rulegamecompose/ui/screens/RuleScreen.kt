@@ -32,7 +32,6 @@ import com.example.rulegamecompose.ui.viewmodel.RuleViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 
 @Composable
@@ -54,7 +53,7 @@ fun RuleScreen(vm: RuleViewModel) {
                 var index = 0
                 val job = async(Dispatchers.Default) {
                     vm.getCurrentIndex().collect {
-                         index = it
+                        index = it
                     }
                 }
                 job.await()

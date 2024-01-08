@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.rulegamecompose.domain.impl.RuleInteractorImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
@@ -19,8 +18,8 @@ class RuleViewModel(private val interactor: RuleInteractorImpl) : ViewModel() {
 
     fun twistRule(currentValue: Float) {
         gettingNumber.value = interactor.getDroppedNumber(currentValue)
-        viewModelScope.launch(Dispatchers.Default){
-            getCurrentNumberState().collect{
+        viewModelScope.launch(Dispatchers.Default) {
+            getCurrentNumberState().collect {
                 curerentIndex.value = interactor.getIndex(it)
             }
         }
