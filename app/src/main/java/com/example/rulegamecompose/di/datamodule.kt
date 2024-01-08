@@ -3,6 +3,7 @@ package com.example.rulegamecompose.di
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rulegamecompose.data.storage.Impl.RuleStorageImpl
+import com.example.rulegamecompose.data.storage.RuleStorage
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -15,5 +16,5 @@ val dataModule = module {
         )
     }
 
-    single { RuleStorageImpl(sharedPreferences = get()) }
+    single<RuleStorage> { RuleStorageImpl(sharedPreferences = get()) }
 }

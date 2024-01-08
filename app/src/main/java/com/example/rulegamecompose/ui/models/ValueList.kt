@@ -2,7 +2,7 @@ package com.example.rulegamecompose.ui.models
 
 import android.graphics.Color
 
-data class RuleNumber(val value: Int, val numColor: Int)
+data class RuleNumber(val valueNumber: Int, val numColor: Int)
 
 object ValueList {
     val list = listOf(
@@ -44,4 +44,21 @@ object ValueList {
         RuleNumber(3, Color.RED),
         RuleNumber(26, Color.BLACK),
     )
+
+    fun getListGreen(): List<Int> = listOf(0)
+
+    fun getListBlack(): List<Int> {
+        val result = mutableListOf<Int>()
+        list.forEach(){
+            if (it.numColor == Color.BLACK) result.add(it.valueNumber)
+        }
+        return result
+    }
+    fun getListRed(): List<Int> {
+        val result = mutableListOf<Int>()
+        list.forEach(){
+            if (it.numColor == Color.RED) result.add(it.valueNumber)
+        }
+        return result
+    }
 }
