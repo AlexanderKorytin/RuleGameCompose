@@ -1,6 +1,7 @@
-package com.example.rulegamecompose
+package com.example.rulegamecompose.app
 
 import android.app.Application
+import com.example.rulegamecompose.di.dataModule
 import com.example.rulegamecompose.di.domainModule
 import com.example.rulegamecompose.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -12,8 +13,9 @@ class App : Application() {
         startKoin {
             androidContext(applicationContext)
             modules(
+                dataModule,
                 domainModule,
-                viewModelModule
+                viewModelModule,
             )
         }
     }
