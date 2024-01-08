@@ -1,4 +1,4 @@
-package com.example.rulegamecompose.models
+package com.example.rulegamecompose.ui.models
 
 import android.graphics.Color
 

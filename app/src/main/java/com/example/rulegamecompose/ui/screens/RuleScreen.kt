@@ -1,4 +1,4 @@
-package com.example.rulegamecompose.screens
+package com.example.rulegamecompose.ui.screens
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -24,16 +24,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.rulegamecompose.R
-import com.example.rulegamecompose.models.ValueList
-import kotlin.math.roundToInt
+import com.example.rulegamecompose.ui.models.ValueList
+import com.example.rulegamecompose.ui.viewmodel.RuleViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 
-@Preview(showBackground = true)
 @Composable
-fun RuleScreen() {
+fun RuleScreen(vm: RuleViewModel) {
 
     var rotationValue by remember {
         mutableStateOf(0f)
@@ -47,9 +50,17 @@ fun RuleScreen() {
     val angle by animateFloatAsState(targetValue = rotationValue, label = "",
         animationSpec = tween(durationMillis = 2000),
         finishedListener = {
-            val index = (360f - (it % 360)) / (360f / ValueList.list.size)
-            resultNumber = ValueList.list[index.roundToInt()].value.toString()
-            color = Color(ValueList.list[index.roundToInt()].numColor)
+            CoroutineScope(Dispatchers.Main).launch {
+                var index = 0
+                val job = async(Dispatchers.Default) {
+                    vm.getCurrentIndex().collect {
+                         index = it
+                    }
+                }
+                job.await()
+                resultNumber = ValueList.list[index].value.toString()
+                color = Color(ValueList.list[index].numColor)
+            }
         }
     )
     Column(
@@ -85,7 +96,12 @@ fun RuleScreen() {
         }
         Button(
             onClick = {
-                rotationValue = (720..3600).random().toFloat() + angle
+                vm.twistRule(angle)
+                CoroutineScope(Dispatchers.Default).launch {
+                    vm.getCurrentNumberState().collect {
+                        rotationValue = it
+                    }
+                }.onJoin
             },
             Modifier
                 .fillMaxWidth()
